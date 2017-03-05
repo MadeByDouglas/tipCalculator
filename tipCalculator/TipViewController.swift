@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TipViewController.swift
 //  tipCalculator
 //
 //  Created by Douglas Hewitt on 3/4/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class TipViewController: UIViewController {
 
     
     @IBOutlet weak var billTextField: UITextField!
@@ -19,14 +19,27 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var tipPercentageSegmentedControl: UISegmentedControl!
     
+    let defaults = UserDefaults.standard
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard let tip = defaults.object(forKey: "defaultTip") as? Double else {return}
+
+        if tip == 0.18 {
+            tipPercentageSegmentedControl.selectedSegmentIndex = 0
+        } else if tip == 0.2 {
+            tipPercentageSegmentedControl.selectedSegmentIndex = 1
+        } else if tip == 0.25 {
+            tipPercentageSegmentedControl.selectedSegmentIndex = 2
+        }
+        
+        updateLabels(text: billTextField.text)
     }
 
     @IBAction func isEditingBill(_ sender: UITextField) {
